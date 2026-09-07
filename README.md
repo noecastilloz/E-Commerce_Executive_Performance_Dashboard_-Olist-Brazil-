@@ -57,5 +57,5 @@ Puntuación Promedio = AVERAGE(Fact_order_reviews[review_score])
 ## 📂 Descarga e Instalación
 
 1. Puedes clonar el repositorio completo o descargar directamente el archivo ejecutable:
-   * 📥 [Descargar Dashboard en Power BI (.pbix)](dashboard/Olist_Executive_Performance.pbix)
+   * 📥 [Descargar Dashboard en Power BI (.pbix)](dashboard/Olist_Executive_Performance.pbit)
 2. Abre el archivo descargado en **Power BI Desktop**.
