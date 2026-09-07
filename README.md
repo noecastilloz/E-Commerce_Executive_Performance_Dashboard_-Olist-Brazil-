@@ -54,4 +54,8 @@ Flete Promedio = DIVIDE(SUM(Fact_order_items[freight_value]), [Total Pedidos], 0
 Puntuación Promedio = AVERAGE(Fact_order_reviews[review_score])
 ```
 ---
-git clone [https://github.com/tu-usuario/olist-ecommerce-powerbi.git](https://github.com/tu-usuario/olist-ecommerce-powerbi.git)
+## 📂 Descarga e Instalación
+
+1. Puedes clonar el repositorio completo o descargar directamente el archivo ejecutable:
+   * 📥 [Descargar Dashboard en Power BI (.pbix)](dashboard/Olist_Executive_Performance.pbix)
+2. Abre el archivo descargado en **Power BI Desktop**.
