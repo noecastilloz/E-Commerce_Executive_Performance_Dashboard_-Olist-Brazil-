@@ -68,4 +68,4 @@ Modelar y visualizar datos transaccionales de comercio electrónico para respald
 └── README.md                                # Documentación principal
 ```
 ---
-git clone [https://github.com/tu-usuario/nombre-del-repositorio.git](dashboard/Olist_Executive_Performance.pbit)
+git clone [https://github.com/noecastilloz/E-Commerce_Executive_Performance_Dashboard_-Olist-Brazil-.git](dashboard/Olist_Executive_Performance.pbit)
