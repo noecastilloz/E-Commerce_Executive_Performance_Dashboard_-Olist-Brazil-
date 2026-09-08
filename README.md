@@ -66,3 +66,6 @@ Modelar y visualizar datos transaccionales de comercio electrónico para respald
 ├── docs/
 │   └── dax_measures_dictionary.md           # Diccionario técnico de medidas DAX
 └── README.md                                # Documentación principal
+```
+---
+git clone [https://github.com/tu-usuario/nombre-del-repositorio.git](https://github.com/tu-usuario/nombre-del-repositorio.git)
