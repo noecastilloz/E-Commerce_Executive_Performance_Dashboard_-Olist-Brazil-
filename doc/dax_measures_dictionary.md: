@@ -1,0 +1,24 @@
+# 📚 Diccionario de Medidas DAX y Documentación Técnica
+
+Este documento contiene la especificación técnica de las medidas DAX creadas para el proyecto **E-Commerce Executive Performance (Olist Brazil)**, incluyendo la lógica de cálculo, transformaciones de datos y reglas de modelado.
+
+---
+
+## 📐 1. Medidas de Ingresos y Ventas
+
+### `[Ingresos Totales]`
+Calcula el monto bruto generado por la venta de productos, aplicando la corrección de escala por factor 100.
+
+```dax
+Ingresos Totales = 
+SUM ( Fact_order_items[price] )
+
+[Ventas PY] (Prior Year)
+Calcula los ingresos correspondientes al mismo periodo del año anterior para análisis comparativo temporal.
+
+Ventas PY = 
+CALCULATE (
+    [Ingresos Totales],
+    SAMEPERIODLASTYEAR ( Dim_Calendar[Date] )
+)
+
