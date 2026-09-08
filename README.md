@@ -68,4 +68,4 @@ Modelar y visualizar datos transaccionales de comercio electrónico para respald
 └── README.md                                # Documentación principal
 ```
 ---
-git clone [https://github.com/tu-usuario/nombre-del-repositorio.git](https://github.com/tu-usuario/nombre-del-repositorio.git)
+git clone [https://github.com/tu-usuario/nombre-del-repositorio.git](dashboard)
