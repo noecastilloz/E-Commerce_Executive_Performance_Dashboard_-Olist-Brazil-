@@ -1,0 +1,61 @@
+table Fact_order_payments
+	lineageTag: b22cb957-979c-4568-bb73-32eeb014c628
+
+	column order_id
+		dataType: string
+		lineageTag: a2eb7da3-2e3b-4d3c-8985-0902ad9100cf
+		summarizeBy: none
+		sourceColumn: order_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column payment_sequential
+		dataType: int64
+		formatString: 0
+		lineageTag: 6a39562b-4a11-49ae-9bfc-9f40ae0313b7
+		summarizeBy: sum
+		sourceColumn: payment_sequential
+
+		annotation SummarizationSetBy = Automatic
+
+	column payment_type
+		dataType: string
+		lineageTag: ba915509-ae2c-4ce6-87c8-3bd6f01309b9
+		summarizeBy: none
+		sourceColumn: payment_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column payment_installments
+		dataType: int64
+		formatString: 0
+		lineageTag: 86f5c693-7018-46b3-8f04-318d211c67a4
+		summarizeBy: sum
+		sourceColumn: payment_installments
+
+		annotation SummarizationSetBy = Automatic
+
+	column payment_value
+		dataType: decimal
+		formatString: 0
+		lineageTag: 918bfcc7-e6d9-40bd-ada4-e5c6fe2ff7fd
+		summarizeBy: sum
+		sourceColumn: payment_value
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Fact_order_payments = m
+		mode: import
+		source =
+				let
+				  Origen = Csv.Document(File.Contents("C:\Users\noeca\OneDrive\Documentos\Triple_Ten_Data_Analysis\Tu Ruta Profecional\Portafolio\archive\olist_order_payments_dataset.csv"), [Delimiter = ",", Columns = 5, QuoteStyle = QuoteStyle.None]),
+				  #"Encabezados promovidos" = Table.PromoteHeaders(Origen, [PromoteAllScalars = true]),
+				  #"Tipo de columna cambiado" = Table.TransformColumnTypes(#"Encabezados promovidos", {{"order_id", type text}, {"payment_sequential", Int64.Type}, {"payment_type", type text}, {"payment_installments", Int64.Type}, {"payment_value", Int64.Type}}, "es"),
+				    #"Tipo cambiado" = Table.TransformColumnTypes(#"Tipo de columna cambiado",{{"payment_value", Currency.Type}})
+				in
+				  #"Tipo cambiado"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

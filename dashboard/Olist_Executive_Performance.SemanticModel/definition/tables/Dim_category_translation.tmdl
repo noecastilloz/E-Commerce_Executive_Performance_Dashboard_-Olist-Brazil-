@@ -1,0 +1,33 @@
+table Dim_category_translation
+	lineageTag: 2203e4b8-1a14-42dd-8ab8-ad2c41dc9318
+
+	column product_category_name
+		dataType: string
+		lineageTag: 60a161cc-7be2-4781-987f-fa96952758dd
+		summarizeBy: none
+		sourceColumn: product_category_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_category_name_english
+		dataType: string
+		lineageTag: dbd71056-5e55-4577-ac0d-bc97ddec8055
+		summarizeBy: none
+		sourceColumn: product_category_name_english
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_category_translation = m
+		mode: import
+		source =
+				let
+				  Origen = Csv.Document(File.Contents("C:\Users\noeca\OneDrive\Documentos\Triple_Ten_Data_Analysis\Tu Ruta Profecional\Portafolio\archive\product_category_name_translation.csv"), [Delimiter = ",", Columns = 2, Encoding = 65001, QuoteStyle = QuoteStyle.None]),
+				    #"Encabezados promovidos" = Table.PromoteHeaders(Origen, [PromoteAllScalars=true]),
+				    #"Tipo cambiado" = Table.TransformColumnTypes(#"Encabezados promovidos",{{"product_category_name", type text}, {"product_category_name_english", type text}})
+				in
+				  #"Tipo cambiado"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

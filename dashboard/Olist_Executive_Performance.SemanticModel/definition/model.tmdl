@@ -1,0 +1,38 @@
+model Model
+	culture: es-ES
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: es-MX
+	valueFilterBehavior: independent
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["Dim_customers","Dim_geolocation","Fact_order_items","Fact_order_payments","Fact_order_reviews","Fact_orders","Dim_products","Dim_sellers","Dim_category_translation"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table Dim_customers
+ref table Dim_geolocation
+ref table Fact_order_items
+ref table DateTableTemplate_20f649be-c5f3-4c13-b22b-14fd5e261e7d
+ref table LocalDateTable_f2ac1aa9-39cd-4c1c-9018-f777436c5952
+ref table Fact_order_payments
+ref table Fact_order_reviews
+ref table LocalDateTable_c67c6fec-476e-4176-a6fa-85c69f45d66c
+ref table LocalDateTable_2f0b25df-cbab-4a44-a24b-35184d1a294d
+ref table Fact_orders
+ref table LocalDateTable_79458029-d303-43dd-8a10-a92e5dff3cd7
+ref table LocalDateTable_550167b0-26d5-4e88-be80-729c4897560a
+ref table LocalDateTable_cb97f44e-c547-49ae-a7f5-6a8120c2e13c
+ref table LocalDateTable_ff33ba37-9cd7-452e-b744-fbfc0f6c45df
+ref table Dim_products
+ref table Dim_sellers
+ref table Dim_category_translation
+ref table Dim_Calendar
+ref table _Medidas
+ref table LocalDateTable_486a81c1-d163-4055-adfd-05e71aa4565f
+
+ref cultureInfo es-ES
+

@@ -1,0 +1,71 @@
+table Dim_Calendar
+	lineageTag: c2b0fe43-7258-4829-8505-2c71d1185327
+
+	column Date
+		formatString: dd/mm/yyyy
+		lineageTag: 08d53265-5660-4d67-8a1b-e1dcbe883c30
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Date]
+
+		variation Variación
+			isDefault
+			relationship: ccf423e6-30e5-463e-85f2-6997bb269f54
+			defaultHierarchy: LocalDateTable_486a81c1-d163-4055-adfd-05e71aa4565f.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column Año
+		formatString: 0
+		lineageTag: a0320f09-59f1-4693-8872-b46875732719
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Año]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Mes
+		lineageTag: 23d0b1ac-c837-4fb5-b331-b3fbfe365716
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Mes]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Mes numero'
+		formatString: 0
+		lineageTag: af58fe42-f017-46b1-ba9b-90f31396616e
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Mes numero]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Año-Mes
+		lineageTag: 06440caa-c100-4f7e-89ed-1e70561a762a
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Año-Mes]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_Calendar = calculated
+		mode: import
+		source =
+				ADDCOLUMNS(
+				    CALENDAR(
+				        MIN(Fact_orders[order_purchase_timestamp]),
+				        MAX(Fact_orders[order_purchase_timestamp])
+				        ),
+				    "Año", YEAR([Date]),
+				    "Mes", FORMAT([Date], "MMMM"),
+				    "Mes numero", MONTH([Date]),
+				    "Año-Mes", FORMAT([Date], "YYYY-MM")
+				)
+
+	annotation PBI_Id = 2025e6b5fc4d45d482924ab2043ea427
+

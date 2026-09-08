@@ -1,0 +1,93 @@
+table Fact_order_reviews
+	lineageTag: 03bf546e-a87b-4ab5-92ca-57722d9f2a51
+
+	column review_id
+		dataType: string
+		lineageTag: 3e6a8fda-8957-4afb-92e5-0ba9acc64aa6
+		summarizeBy: none
+		sourceColumn: review_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_id
+		dataType: string
+		lineageTag: 9cb136fa-804e-442b-b4ef-7c7faaa4c6f5
+		summarizeBy: none
+		sourceColumn: order_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column review_score
+		dataType: double
+		formatString: 0
+		lineageTag: f1fadb89-dede-4c75-b377-983e4e2c10e7
+		summarizeBy: sum
+		sourceColumn: review_score
+
+		annotation SummarizationSetBy = Automatic
+
+	column review_comment_title
+		dataType: string
+		lineageTag: 103bbd97-d264-402e-bc28-6742799ed171
+		summarizeBy: none
+		sourceColumn: review_comment_title
+
+		annotation SummarizationSetBy = Automatic
+
+	column review_comment_message
+		dataType: string
+		lineageTag: c1a93516-965d-4bb4-b019-90ee9a643e50
+		summarizeBy: none
+		sourceColumn: review_comment_message
+
+		annotation SummarizationSetBy = Automatic
+
+	column review_creation_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 394fd3dc-bfe4-4368-a0aa-8841bfd083e4
+		summarizeBy: none
+		sourceColumn: review_creation_date
+
+		variation Variación
+			isDefault
+			relationship: 6eb08124-ad0f-4f7e-bbfd-3491c88e805b
+			defaultHierarchy: LocalDateTable_c67c6fec-476e-4176-a6fa-85c69f45d66c.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column review_answer_timestamp
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 3ce0a4dc-bb65-4c76-a4cf-564315035979
+		summarizeBy: none
+		sourceColumn: review_answer_timestamp
+
+		variation Variación
+			isDefault
+			relationship: 6c144bf8-df0a-4a0f-af73-dafe48cbaa42
+			defaultHierarchy: LocalDateTable_2f0b25df-cbab-4a44-a24b-35184d1a294d.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition Fact_order_reviews = m
+		mode: import
+		source =
+				let
+				  Origen = Csv.Document(File.Contents("C:\Users\noeca\OneDrive\Documentos\Triple_Ten_Data_Analysis\Tu Ruta Profecional\Portafolio\archive\olist_order_reviews_dataset.csv"), [Delimiter = ",", Columns = 7, Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				  #"Encabezados promovidos" = Table.PromoteHeaders(Origen, [PromoteAllScalars = true]),
+				  #"Tipo de columna cambiado" = Table.TransformColumnTypes(#"Encabezados promovidos", {{"review_id", type text}, {"order_id", type text}, {"review_score", Int64.Type}, {"review_comment_title", type text}, {"review_comment_message", type text}, {"review_creation_date", type datetime}, {"review_answer_timestamp", type datetime}}, "es"),
+				    #"Tipo cambiado" = Table.TransformColumnTypes(#"Tipo de columna cambiado",{{"review_creation_date", type date}, {"review_answer_timestamp", type date}, {"review_score", Percentage.Type}}),
+				    #"Tipo cambiado con configuración regional" = Table.TransformColumnTypes(#"Tipo cambiado", {{"review_score", Percentage.Type}}, "es-MX"),
+				    #"Tipo cambiado1" = Table.TransformColumnTypes(#"Tipo cambiado con configuración regional",{{"review_score", type number}})
+				in
+				  #"Tipo cambiado1"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

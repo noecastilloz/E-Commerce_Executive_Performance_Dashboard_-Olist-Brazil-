@@ -1,0 +1,98 @@
+table Dim_customers
+	lineageTag: dd80b11c-2793-4e80-aea3-9c0ae0b73457
+
+	column customer_id
+		dataType: string
+		lineageTag: 6e59b1bc-27f5-4bdb-9378-0644a3dca560
+		summarizeBy: none
+		sourceColumn: customer_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_unique_id
+		dataType: string
+		lineageTag: c23c3c09-3a51-46c3-8b66-9df7a68a40ed
+		summarizeBy: none
+		sourceColumn: customer_unique_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_zip_code_prefix
+		dataType: int64
+		formatString: 0
+		lineageTag: 3da019eb-132d-4de3-aaad-aa7e3cfa6b07
+		summarizeBy: none
+		sourceColumn: customer_zip_code_prefix
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_city
+		dataType: string
+		lineageTag: 30e5cb22-83bb-4c6e-9182-166b003c22fc
+		summarizeBy: none
+		sourceColumn: customer_city
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_state
+		dataType: string
+		lineageTag: 1c8123d0-764b-4d71-9f82-37d37c8a1a0a
+		dataCategory: StateOrProvince
+		summarizeBy: none
+		sourceColumn: customer_state
+
+		annotation SummarizationSetBy = Automatic
+
+	column Estado_Nombre =
+			
+			SWITCH (
+			    Dim_customers[customer_state],
+			    "SP", "São Paulo, Brasil",
+			    "RJ", "Rio de Janeiro, Brasil",
+			    "MG", "Minas Gerais, Brasil",
+			    "RS", "Rio Grande do Sul, Brasil",
+			    "PR", "Paraná, Brasil",
+			    "SC", "Santa Catarina, Brasil",
+			    "BA", "Bahia, Brasil",
+			    "DF", "Distrito Federal, Brasil",
+			    "ES", "Espírito Santo, Brasil",
+			    "GO", "Goiás, Brasil",
+			    "PE", "Pernambuco, Brasil",
+			    "CE", "Ceará, Brasil",
+			    "PA", "Pará, Brasil",
+			    "MT", "Mato Grosso, Brasil",
+			    "MA", "Maranhão, Brasil",
+			    "MS", "Mato Grosso do Sul, Brasil",
+			    "PB", "Paraíba, Brasil",
+			    "PI", "Piauí, Brasil",
+			    "RN", "Rio Grande do Norte, Brasil",
+			    "AL", "Alagoas, Brasil",
+			    "SE", "Sergipe, Brasil",
+			    "AM", "Amazonas, Brasil",
+			    "RO", "Rondônia, Brasil",
+			    "TO", "Tocantins, Brasil",
+			    "AC", "Acre, Brasil",
+			    "AP", "Amapá, Brasil",
+			    "RR", "Roraima, Brasil",
+			    "Brasil"
+			)
+		lineageTag: 41fd73f3-0ba5-469e-8625-4c8db7cf6231
+		dataCategory: StateOrProvince
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_customers = m
+		mode: import
+		source =
+				let
+				  Origen = Csv.Document(File.Contents("C:\Users\noeca\OneDrive\Documentos\Triple_Ten_Data_Analysis\Tu Ruta Profecional\Portafolio\archive\olist_customers_dataset.csv"), [Delimiter = ",", Columns = 5, QuoteStyle = QuoteStyle.None]),
+				  #"Encabezados promovidos" = Table.PromoteHeaders(Origen, [PromoteAllScalars = true]),
+				  #"Tipo de columna cambiado" = Table.TransformColumnTypes(#"Encabezados promovidos", {{"customer_id", type text}, {"customer_unique_id", type text}, {"customer_zip_code_prefix", Int64.Type}, {"customer_city", type text}, {"customer_state", type text}}, "es")
+				in
+				  #"Tipo de columna cambiado"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

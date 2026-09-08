@@ -1,0 +1,86 @@
+table _Medidas
+	lineageTag: cc508101-bfce-4bd4-8ea1-7f8f5231de33
+
+	measure 'Ventas Totales' = SUM ( Fact_order_items[price] )
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 2c245cba-7f8a-4be0-a176-9194c95c108c
+
+	measure 'Flete Total' = SUM( Fact_order_items[freight_value] )
+		formatString: \$#,0.###############;-\$#,0.###############;\$#,0.###############
+		lineageTag: 3a639b6b-f291-47ba-a219-00ea5f5d9318
+
+		annotation PBI_FormatHint = {"currencyCulture":"es-MX"}
+
+	measure 'Ingresos Totales' = [Ventas Totales] + [Flete Total]
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 5d6df3c6-dd35-4656-b0ac-bcbfbe99df57
+
+	measure 'Total Pedidos' = DISTINCTCOUNT ( Fact_orders[order_id] )
+		formatString: 0
+		lineageTag: 419ed9d9-8fff-44e2-b987-4fcdd46f2886
+
+	measure 'Ticket Promedio' =
+			
+			DIVIDE (
+			    SUM ( Fact_order_items[price] ),
+			    DISTINCTCOUNT ( Fact_order_items[order_id] ),
+			    0
+			)
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 9ae9b18a-1354-4cef-8905-f7827e80a715
+
+	measure 'Satisfacción Promedio' = AVERAGE ( Fact_order_reviews[review_score] )
+		formatString: 0.00
+		lineageTag: 79382551-f3fc-4582-8cd7-34563b23c790
+
+	measure 'Ventas PY' =
+			
+			IF (
+			    ISBLANK ( [Ventas Totales] ) || [Ventas Totales] = 0,
+			    BLANK (),
+			    CALCULATE (
+			        [Ventas Totales],
+			        SAMEPERIODLASTYEAR ( Dim_Calendar[Date] )
+			    )
+			)
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: d7cab62a-739b-4490-ba57-37a782d3fe19
+
+	measure 'Crecimiento Ventas %' =
+			
+			DIVIDE ( [Ventas Totales] - [Ventas PY], [Ventas PY], 0 )
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 661061dc-a472-4f6f-88e2-5e496359ff19
+
+	measure Medida = SUM(Fact_order_items[price]) / DISTINCTCOUNT(Fact_orders[order_id])
+		formatString: \$#,0.###############;-\$#,0.###############;\$#,0.###############
+		lineageTag: 8870c96e-3ac9-4426-bf99-099bb7f69386
+
+		annotation PBI_FormatHint = {"currencyCulture":"es-MX"}
+
+	measure 'Flete Promedio' =
+			
+			DIVIDE ( [Flete Total], [Total Pedidos], 0 )
+		formatString: \$#,0.###############;-\$#,0.###############;\$#,0.###############
+		lineageTag: 154fcd9c-0fe4-40ef-b215-62a3ae17e57d
+
+		annotation PBI_FormatHint = {"currencyCulture":"es-MX"}
+
+	column Column
+		isHidden
+		formatString: 0
+		lineageTag: 285dbefc-e90c-4138-a94b-066392f044c5
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Column]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition _Medidas = calculated
+		mode: import
+		source = Row("Column", BLANK())
+
+	annotation PBI_Id = b3b48c2fcb514fe4b45d907df02ba6ef
+
+	annotation 436ba87b-9c83-4389-a31b-ebd06a36be98 = {"Expression":""}
+

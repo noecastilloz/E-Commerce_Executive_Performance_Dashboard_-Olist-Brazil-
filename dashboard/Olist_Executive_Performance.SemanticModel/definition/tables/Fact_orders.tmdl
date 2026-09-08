@@ -1,0 +1,117 @@
+table Fact_orders
+	lineageTag: b93e94b5-6ca8-41a0-b640-44df3321f879
+
+	column order_id
+		dataType: string
+		lineageTag: e112ef5b-4509-4085-9987-084c7c00696a
+		summarizeBy: none
+		sourceColumn: order_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_id
+		dataType: string
+		lineageTag: e416d081-42b5-4387-b516-5b80f0d4b2ab
+		summarizeBy: none
+		sourceColumn: customer_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_status
+		dataType: string
+		lineageTag: d0169d42-47ba-439c-ad82-cf0c1e42779d
+		summarizeBy: none
+		sourceColumn: order_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_purchase_timestamp
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: d3b02ae7-820c-4593-8d5d-391bed75cb11
+		summarizeBy: none
+		sourceColumn: order_purchase_timestamp
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column order_approved_at
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 4563b196-afeb-44c4-b6f5-52a45dfd1d43
+		summarizeBy: none
+		sourceColumn: order_approved_at
+
+		variation Variación
+			isDefault
+			relationship: ba11c0fc-6cce-4570-a571-3d99173016a6
+			defaultHierarchy: LocalDateTable_79458029-d303-43dd-8a10-a92e5dff3cd7.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column order_delivered_carrier_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 0ec70c4f-eba9-4c31-8619-6ca4edf8cdc6
+		summarizeBy: none
+		sourceColumn: order_delivered_carrier_date
+
+		variation Variación
+			isDefault
+			relationship: 1cfafc50-dcb9-4c4b-a39c-29add8dcb8a4
+			defaultHierarchy: LocalDateTable_550167b0-26d5-4e88-be80-729c4897560a.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column order_delivered_customer_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: c065ebd4-0077-4054-ae90-d82273bdd6c0
+		summarizeBy: none
+		sourceColumn: order_delivered_customer_date
+
+		variation Variación
+			isDefault
+			relationship: b627df09-8d37-4b36-99cc-e59e71f4147c
+			defaultHierarchy: LocalDateTable_cb97f44e-c547-49ae-a7f5-6a8120c2e13c.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column order_estimated_delivery_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 94757acb-b199-4665-a71e-4899e8cb63b7
+		summarizeBy: none
+		sourceColumn: order_estimated_delivery_date
+
+		variation Variación
+			isDefault
+			relationship: 181de814-c5ec-4378-9270-a4b6a81684f0
+			defaultHierarchy: LocalDateTable_ff33ba37-9cd7-452e-b744-fbfc0f6c45df.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition Fact_orders = m
+		mode: import
+		source =
+				let
+				  Origen = Csv.Document(File.Contents("C:\Users\noeca\OneDrive\Documentos\Triple_Ten_Data_Analysis\Tu Ruta Profecional\Portafolio\archive\olist_orders_dataset.csv"), [Delimiter = ",", Columns = 8, QuoteStyle = QuoteStyle.None]),
+				  #"Encabezados promovidos" = Table.PromoteHeaders(Origen, [PromoteAllScalars = true]),
+				  #"Tipo de columna cambiado" = Table.TransformColumnTypes(#"Encabezados promovidos", {{"order_id", type text}, {"customer_id", type text}, {"order_status", type text}, {"order_purchase_timestamp", type datetime}, {"order_approved_at", type datetime}, {"order_delivered_carrier_date", type datetime}, {"order_delivered_customer_date", type datetime}, {"order_estimated_delivery_date", type datetime}}, "es"),
+				    #"Tipo cambiado" = Table.TransformColumnTypes(#"Tipo de columna cambiado",{{"order_purchase_timestamp", type date}, {"order_approved_at", type date}, {"order_delivered_carrier_date", type date}, {"order_delivered_customer_date", type date}, {"order_estimated_delivery_date", type date}})
+				in
+				  #"Tipo cambiado"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

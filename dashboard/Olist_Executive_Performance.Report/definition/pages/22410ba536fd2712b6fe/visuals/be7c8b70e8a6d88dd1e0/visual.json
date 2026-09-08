@@ -1,0 +1,38 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "be7c8b70e8a6d88dd1e0",
+  "position": {
+    "x": 9.4504902903287817,
+    "y": 0,
+    "z": 0,
+    "height": 75.603922322630254,
+    "width": 1164.7729282830223,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "E-Commerce Executive Performance (Olist Brazil)",
+                    "textStyle": {
+                      "fontFamily": "Arial Black",
+                      "fontSize": "32pt",
+                      "color": "#118dff"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

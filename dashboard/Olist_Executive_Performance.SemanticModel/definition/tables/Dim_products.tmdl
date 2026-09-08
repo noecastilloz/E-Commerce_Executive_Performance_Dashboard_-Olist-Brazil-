@@ -1,0 +1,99 @@
+table Dim_products
+	lineageTag: 4e9067d9-eb19-4455-bdfb-adae0a8967f8
+
+	column product_id
+		dataType: string
+		lineageTag: 92b298dd-36d6-45a9-88d1-85b8e459fdcd
+		summarizeBy: none
+		sourceColumn: product_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_category_name
+		dataType: string
+		lineageTag: dc9a15a8-8026-4d04-ac90-2015e989e458
+		summarizeBy: none
+		sourceColumn: product_category_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_category_name_english
+		dataType: string
+		lineageTag: 3319c730-a303-4798-868c-b253315a8bb1
+		summarizeBy: none
+		sourceColumn: product_category_name_english
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_name_lenght
+		dataType: string
+		lineageTag: 0b29ea6d-0b3a-496b-9542-c6199454a1e9
+		summarizeBy: none
+		sourceColumn: product_name_lenght
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_description_lenght
+		dataType: string
+		lineageTag: 4a96399b-3565-484f-b396-ec3f5db5070f
+		summarizeBy: none
+		sourceColumn: product_description_lenght
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_photos_qty
+		dataType: string
+		lineageTag: 7e681445-89ab-44c8-bcf3-e3e48199e9db
+		summarizeBy: none
+		sourceColumn: product_photos_qty
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_weight_g
+		dataType: string
+		lineageTag: 04f6e504-65d9-40cf-9f9f-37bbd312dc1c
+		summarizeBy: none
+		sourceColumn: product_weight_g
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_length_cm
+		dataType: string
+		lineageTag: e99436b3-774e-49dc-a2c3-f7c3e8600ed8
+		summarizeBy: none
+		sourceColumn: product_length_cm
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_height_cm
+		dataType: string
+		lineageTag: 2e5fb113-0dcf-4db3-9f22-3858471bd358
+		summarizeBy: none
+		sourceColumn: product_height_cm
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_width_cm
+		dataType: string
+		lineageTag: 444e2281-b4ad-4c1b-ba7f-d189cc719ef0
+		summarizeBy: none
+		sourceColumn: product_width_cm
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_products = m
+		mode: import
+		source =
+				let
+				  Origen = Csv.Document(File.Contents("C:\Users\noeca\OneDrive\Documentos\Triple_Ten_Data_Analysis\Tu Ruta Profecional\Portafolio\archive\olist_products_dataset.csv"), [Delimiter = ",", Columns = 9, QuoteStyle = QuoteStyle.None]),
+				  #"Encabezados promovidos" = Table.PromoteHeaders(Origen, [PromoteAllScalars = true]),
+				  #"Duplicados quitados" = Table.Distinct(#"Encabezados promovidos", {"product_id"}),
+				    #"Consultas combinadas" = Table.NestedJoin(#"Duplicados quitados", {"product_category_name"}, Dim_category_translation, {"product_category_name"}, "Dim_category_translation", JoinKind.LeftOuter),
+				    #"Se expandió Dim_category_translation" = Table.ExpandTableColumn(#"Consultas combinadas", "Dim_category_translation", {"product_category_name_english"}, {"product_category_name_english"})
+				in
+				    #"Se expandió Dim_category_translation"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+
