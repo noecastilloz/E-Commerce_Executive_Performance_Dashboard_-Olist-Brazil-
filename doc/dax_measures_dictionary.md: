@@ -22,3 +22,85 @@ CALCULATE (
     SAMEPERIODLASTYEAR ( Dim_Calendar[Date] )
 )
 
+📦 2. Medidas de Volumen y Logística
+[Total Pedidos]
+Cuenta el número único de órdenes procesadas en la plataforma.
+
+Total Pedidos = 
+DISTINCTCOUNT ( Fact_orders[order_id] )
+
+[Ticket Promedio]
+Monitorear el valor medio generado por cada orden de compra.
+
+Ticket Promedio = 
+DIVIDE (
+    [Ingresos Totales],
+    [Total Pedidos],
+    0
+)
+
+[Flete Total]
+Suma acumulada de los costos de envío pagados por los clientes.
+
+Flete Total = 
+SUM ( Fact_order_items[freight_value] )
+
+[Flete Promedio]
+Costo promedio de envío desembolsado por cada orden recibida.
+
+Flete Promedio = 
+DIVIDE (
+    [Flete Total],
+    [Total Pedidos],
+    0
+)
+
+⭐ 3. Medidas de Calidad y Satisfacción (CSAT)
+[Puntuación Promedio]
+Calcula el nivel promedio de satisfacción del cliente (escala de 1 a 5 estrellas).
+
+Puntuación Promedio = 
+AVERAGE ( Fact_order_reviews[review_score] )
+
+🛠️ 4. Transformaciones y Columnas Calculadas
+Geolocalización Precisa (DAX)
+Columna calculada en la tabla de clientes para forzar la correcta interpretación geográfica en Bing Maps:
+
+Estado_Nombre = 
+SWITCH (
+    Dim_customers[customer_state],
+    "SP", "São Paulo, Brasil",
+    "RJ", "Rio de Janeiro, Brasil",
+    "MG", "Minas Gerais, Brasil",
+    "RS", "Rio Grande do Sul, Brasil",
+    "PR", "Paraná, Brasil",
+    "SC", "Santa Catarina, Brasil",
+    "BA", "Bahia, Brasil",
+    "DF", "Distrito Federal, Brasil",
+    "ES", "Espírito Santo, Brasil",
+    "GO", "Goiás, Brasil",
+    "PE", "Pernambuco, Brasil",
+    "CE", "Ceará, Brasil",
+    "PA", "Pará, Brasil",
+    "MT", "Mato Grosso, Brasil",
+    "MA", "Maranhão, Brasil",
+    "MS", "Mato Grosso do Sul, Brasil",
+    "PB", "Paraíba, Brasil",
+    "PI", "Piauí, Brasil",
+    "RN", "Rio Grande do Norte, Brasil",
+    "AL", "Alagoas, Brasil",
+    "SE", "Sergipe, Brasil",
+    "AM", "Amazonas, Brasil",
+    "RO", "Rondônia, Brasil",
+    "TO", "Tocantins, Brasil",
+    "AC", "Acre, Brasil",
+    "AP", "Amapá, Brasil",
+    "RR", "Roraima, Brasil",
+    "Brasil"
+)
+
+⚙️ 5. Reglas del Modelo de Datos
+Filtro Cruzado Bidireccional (Ambos): La relación entre Fact_orders y Fact_order_reviews sobre el campo order_id se configuró en dirección de filtro cruzado
+Ambos (Both) para permitir que las métricas de pedidos e ingresos se filtren correctamente según la escala de review_score.
+
+Corte de Serie Temporal: Se aplicó un filtro a nivel visual sobre Dim_Calendar[Date] < 01/09/2018 para suprimir registros residuales incompletos del dataset.
